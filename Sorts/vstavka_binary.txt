@@ -1,0 +1,94 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+void sort(int arr[], const int size);
+
+void fillArray(int arr[], const int size)
+{
+	srand((unsigned)time(NULL));
+	for (int i = 0; i < size; i++)
+	{
+		arr[i] = rand() % size;
+	}
+}
+void printArray(int arr[], const int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << arr[i] << '\t';
+	}
+}
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	int N = 0;
+	cout << "Введите длину массива: ";
+	cin >> N;
+	int* array = new int[N];
+
+	fillArray(array, N);
+	printArray(array, N);
+
+	cout << endl;
+
+	sort(array, N);
+	printArray(array, N);
+
+	delete[] array;
+
+	return 0;
+}
+
+void sort(int arr[], const int size)
+{
+	int i = 1;
+	int buf = 0, i_buf = 0;
+	int left = 0, right = 0, middle = 0;
+
+	while (i < size)
+	{
+		buf = arr[i];
+		i_buf = i - 1;
+		left = 0;
+		right = i - 1;
+
+		if (buf < arr[i_buf])
+		{
+			do
+			{
+				middle = trunc((left + right) / 2);
+				if (buf > arr[middle])
+					left = middle + 1;
+				if (buf < arr[middle])
+					right = middle - 1;
+				if (buf == arr[middle])
+					break;
+			} while (left <= right);
+
+			if (buf <= arr[middle])
+			{
+				while (i_buf >= middle)
+				{
+					arr[i_buf + 1] = arr[i_buf];
+					i_buf--;
+				}
+			}
+			else
+			{
+				while (i_buf > middle)
+				{
+					arr[i_buf + 1] = arr[i_buf];
+					i_buf--;
+				}
+			}
+
+			arr[middle] = buf;
+		}
+		i++;
+	}
+}

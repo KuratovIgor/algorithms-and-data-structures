@@ -1,0 +1,30 @@
+#include <iostream>
+
+using namespace std;
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	int N, j;
+	cout << "¬ведите число N: ";
+	cin >> N;
+
+	int Arr[100] = {0,0};
+	Arr[0] = 1;
+	cout << Arr[0] << endl;
+
+	for (int i = 1; i <= N; i++)
+	{
+		for (j = i; j >= 1; j--)
+		{
+			Arr[j] = Arr[j - 1] + Arr[j];
+			cout << Arr[j] << '\t';
+		}
+		Arr[j] = 1;
+		cout << Arr[j] << endl;
+	}
+
+	return 0;
+}

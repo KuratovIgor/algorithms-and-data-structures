@@ -1,0 +1,191 @@
+﻿#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+int split(FILE* fl, FILE* fl1, FILE* fl2);
+void merge(FILE* fl1, FILE* fl2, FILE* fr);
+void sort_merge(FILE* fl);
+void fixFile(FILE* fl, const int size);
+
+void fillArray(int arr[], const int size)
+{
+	srand((unsigned)time(NULL));
+	int newValue = 0;
+	bool check = false;
+	for (int i = 0; i < size; )
+	{
+		newValue = rand() % size;
+		for (int j = 0; j < i; j++)
+		{
+			if (arr[j] == newValue)
+			{
+				check = true;
+				break;
+			}
+			if (arr[j] != newValue)
+			{
+				check = false;
+			}
+		}
+		if (check == false)
+		{
+			arr[i] = newValue;
+			i++;
+		}
+	}
+}
+void printArray(int arr[], const int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << arr[i] << ' ';
+	}
+	cout << endl;
+}
+void fillFile(FILE* fl, const int arr[], const int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		fprintf(fl, "%d ", arr[i]);
+	}
+}
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	int N = 0;
+	cout << "Введите количество элементов в массиве: ";
+	cin >> N;
+
+	int* mas = new int[N];
+
+	fillArray(mas, N);
+	printArray(mas, N);
+
+	FILE* MainFile;
+
+	if ((MainFile = fopen("MainFile.txt", "w")) == NULL)
+	{
+		cout << "Не удается открыть файл для записи!" << endl;
+		return 1;
+	}
+	else
+	{
+		if ((MainFile = fopen("MainFile.txt", "w")) == NULL)
+		{
+			cout << "Не удается открыть файл для записи!" << endl;
+		}
+		else
+		{
+			fillFile(MainFile, mas, N);
+		}
+		fclose(MainFile);
+	}
+
+	MainFile = fopen("MainFile.txt", "r+b");
+	sort_merge(MainFile);
+	fixFile(MainFile, N);
+	fclose(MainFile);
+
+	delete[] mas;
+
+	return 0;
+}
+
+int split(FILE* fl, FILE* fl1, FILE* fl2)
+{
+	int x = 0;
+	int n = 0;
+	rewind(fl);
+	x = fgetc(fl);
+	while (!feof(fl))
+	{
+		fputc(x, fl1);
+		x = fgetc(fl);
+		if (!feof(fl))
+		{
+			fputc(x, fl2);
+			x = fgetc(fl);
+		}
+		n++;
+	}
+	return n > 1;
+}
+
+void merge(FILE* fl1, FILE* fl2, FILE* fr)
+{
+	int x1, x2;
+	rewind(fl1);
+	rewind(fl2);
+	rewind(fr);
+	x1 = fgetc(fl1);
+	x2 = fgetc(fl2);
+	while (!feof(fl1) || !feof(fl2))
+	{
+		if (feof(fl1))
+		{
+			fputc(x2, fr);
+			x2 = fgetc(fl2);
+		}
+		else if (feof(fl2))
+		{
+			fputc(x1, fr);
+			x1 = fgetc(fl1);
+		}
+		else if (x1 < x2)
+		{
+			fputc(x1, fr);
+			x1 = fgetc(fl1);
+		}
+		else
+		{
+			fputc(x2, fr);
+			x2 = fgetc(fl2);
+		}
+	}
+}
+
+void sort_merge(FILE* fl)
+{
+	FILE* fl1 = tmpfile();
+	FILE* fl2 = tmpfile(); 
+	if (split(fl, fl1, fl2))
+	{
+		sort_merge(fl1);
+		sort_merge(fl2);
+	}
+	merge(fl1, fl2, fl);
+	fclose(fl1);
+	fclose(fl2);
+}
+
+void fixFile(FILE* fl, const int size)
+{
+	rewind(fl);
+	int* a = new int[size];
+	int* a1 = new int[size * 2];
+	int i = 0;
+	int k = 0;
+	while (k < size  *2)
+	{
+		a1[k] = fgetc(fl);
+		if (a1[k] != 32)
+		{
+			a[i] = a1[k];
+			cout << a[i] << '\t';
+			i++;
+		}
+		k++;
+	}
+	fl = fopen("MainFile.txt", "w");
+	for (int i = 0; i < size; i++)
+	{
+		fprintf(fl, "%c ", (int)a[i]);
+	}
+	fclose(fl);
+	delete[] a;
+	delete[] a1;
+}

@@ -1,0 +1,40 @@
+#include <iostream>
+
+using namespace std;
+
+
+int fact(int n);
+
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	int N;
+	cout << "¬ведите число N: ";
+	cin >> N;
+
+	cout << '1' << endl;
+
+	for (int i = 1; i <= N; i++)
+	{
+		for (int j = 0;  j <= i;  j++)
+		{
+			int koef = fact(i) / (fact(j) * fact(i - j));
+			cout << koef << '\t';
+		}	
+		cout << endl;
+	}
+
+	return 0;
+}
+
+int fact(int n)
+{
+	if (n == 1)
+		return 1;
+	if (n == 0)
+		return 1;
+	return fact(n - 1) * n;
+}

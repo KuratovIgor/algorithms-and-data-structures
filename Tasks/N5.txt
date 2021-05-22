@@ -1,0 +1,78 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	char stroka[50] = { 0,0,0 };
+	char  close_circle = ')', close_rect = ']', close_figure = '}';
+	char last_skobka = ' ';
+	bool check = false;
+	int circle = 0, rect = 0, figure = 0;
+	cout << "¬ведите строку: ";
+	gets_s(stroka);
+
+	int n = strlen(stroka);
+	for (int i = 0; i < n; i++)
+	{
+		if (stroka[i] == '(') circle++;
+		if (stroka[i] == ')') circle--;
+		if (stroka[i] == '[') rect++;
+		if (stroka[i] == ']') rect--;
+		if (stroka[i] == '{') figure++;
+		if (stroka[i] == '}') figure--;
+	}
+
+	if (circle == 0 && rect == 0 && figure == 0)
+	{
+		int index = 0;
+		for (int i = 0; i < n; i++)
+		{
+			if (stroka[i] == '(' || stroka[i] == '[' || stroka[i] == '{')
+			{
+				last_skobka = stroka[i];
+				index = i;
+			}
+			if (stroka[i] == ')' || stroka[i] == ']' || stroka[i] == '}')
+			{
+				if (last_skobka != '(' && stroka[i] == ')')
+				{
+					cout << "ќшибка на " << i + 1 << " месте строки!" << endl;
+					return 0;
+				}
+				if (last_skobka != '[' && stroka[i] == ']')
+				{
+					cout << "ќшибка на " << i + 1 << " месте строки!" << endl;
+					return 0;
+				}
+				if (last_skobka != '{' && stroka[i] == '}')
+				{
+					cout << "ќшибка на " << i + 1 << " месте строки!" << endl;
+					return 0;
+				}
+				for (int j = index - 1; j >= 0; j--)
+				{
+					if (stroka[j] == '(' || stroka[j] == '[' || stroka[j] == '{')
+					{
+						last_skobka = stroka[j];
+						index--;
+						break;
+					}
+				}
+			}
+		}
+		cout << 0;
+	}
+	else
+	{
+		cout << -1;
+	}
+
+	return 0;
+}

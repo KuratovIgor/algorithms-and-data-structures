@@ -1,0 +1,98 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+void razdelenie(int arr[], const int left, const int right);
+
+void fillArray(int arr[], const int size)
+{
+	srand((unsigned)time(NULL));
+	bool check = false;
+	for (int i = 0; i < size;)
+	{
+		int newValue = rand() % size;
+		for (int j = 0; j < i; j++)
+		{
+			if (arr[j] == newValue)
+			{
+				check = true;
+				break;
+			}
+			else
+			{
+				check = false;
+			}
+		}
+		if (check == false)
+		{
+			arr[i] = newValue;
+			i++;
+		}
+	}
+}
+void printArray(int arr[], const int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << arr[i] << '\t';
+	}
+	cout << endl;
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	int N = 0;
+	cout << "Введите размер массива: ";
+	cin >> N;
+
+	int* array = new int[N];
+
+	fillArray(array, N);
+	printArray(array, N);
+
+	razdelenie(array, 0, N - 1);
+
+	printArray(array, N);
+
+	delete[] array;
+
+	return 0;
+}
+void razdelenie(int arr[], const int left, const int right)
+{
+	int i = left, j = right;
+	int middle = arr[(left + right) / 2];
+
+	while (i < j)
+	{
+		while (arr[i] < middle)
+		{
+			i++;
+		}
+		while (middle < arr[j])
+		{
+			j--;
+		}
+
+		if (i <= j)
+		{
+			int buf = arr[i];
+			arr[i] = arr[j];
+			arr[j] = buf;
+			i++;
+			j--;
+		}
+	}
+
+	if (left < i)
+	{
+		razdelenie(arr, left, j);
+	}
+	if (j < right)
+	{
+		razdelenie(arr, i, right);
+	}
+}

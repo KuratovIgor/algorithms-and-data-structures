@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string.h>
+#include <windows.h>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	char stroka[50] = { 0,0,0 };
+	char stroka2[50] = { 0,0,0, };
+	cout << "Введите предложение: ";
+	gets_s(stroka);
+
+	int n = strlen(stroka);
+	int index = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (stroka[i] != ' ')
+		{
+			index = i;
+			break;
+		}
+	}
+	int k = 0;
+	for (int i = index; i < n; i++)
+	{
+		if (stroka[i] == ' ' && stroka[i + 1] == ' ') continue;
+		stroka2[k] = stroka[i];
+		k++;
+	}
+	stroka2[strlen(stroka2) - 1] = '\0';
+
+	int n2 = strlen(stroka2);
+	for (int i = 0; i < n2; i++)
+	{
+		cout << stroka2[i];
+	}
+
+	cout << '\n' << "Количество символов: " << n2;
+
+	return 0;
+}

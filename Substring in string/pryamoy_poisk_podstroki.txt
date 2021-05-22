@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string.h>
+#include <windows.h>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	char stroka[50] = { 0,0,0 };
+	cout << "Введите строку: ";
+	gets_s(stroka);
+
+	char pod_stroka[50] = { 0,0,0 };
+	cout << "Введите подстроку: ";
+	gets_s(pod_stroka);
+
+	int length1 = strlen(stroka);
+	int length2 = strlen(pod_stroka);
+	int index = 0;
+	bool check = false;
+
+	if (length1 >= length2)
+	{
+		int a = 0;
+
+		for (int i = 0; i < length1; i++)
+		{
+			if (stroka[i] == pod_stroka[0])
+			{
+				int k = i;
+				index = i;
+				for (int j = 0; j < length2; j++)
+				{
+					if (pod_stroka[j] == stroka[k])
+					{
+						k++;
+						check = true;
+					}
+					else
+					{
+						check = false;
+						break;
+					}
+				}
+				if (check == true)
+				{
+					if (a == 0)
+					{
+						a++;
+						cout << "Вхождение подстроки находится под индексом: ";
+					}
+					cout << index << ' ';
+				}
+			}
+		}
+
+		if (a == 0) cout << "Подстрока не обнаружена.";
+	}
+	else { cout << "Подстрока не может быть больше строки!";  }
+
+	return 0;
+}

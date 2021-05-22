@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	char stroka[50] = { 0,0,0 };
+	char stroka_shifr[50] = { 0,0,0 };
+	char stroka_deshifr[50] = { 0,0,0 };
+	cout << "¬ведите строку: ";
+	gets_s(stroka);
+
+	int n = strlen(stroka);
+	int k = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (i % 2 != 0)
+		{
+			stroka_shifr[k] = stroka[i];
+			k++;
+		}
+	}
+	for (int i = n - 1; i >= 0; i--)
+	{
+		if (i % 2 == 0)
+		{
+			stroka_shifr[k] = stroka[i];
+			k++;
+		}
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << stroka_shifr[i];
+	}
+
+	cout << endl;
+
+
+	k = 1;
+	for (int i = 0; i < n/2; i++)
+	{
+		stroka_deshifr[k] = stroka_shifr[i];
+		k += 2;
+	}
+	k = 0;
+	for (int i = n - 1; i >= n/2; i--)
+	{
+		stroka_deshifr[k] = stroka_shifr[i];
+		k += 2;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << stroka_deshifr[i];
+	}
+
+	return 0;
+}

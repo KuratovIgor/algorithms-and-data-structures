@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+int seek_substring_BM(string line, string substring);
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	string line;
+	string substring;
+
+	cout << "Enter line: ";
+	getline(cin, line);
+	cout << "Enter substring: ";
+	getline(cin, substring);
+
+	if (line.length() >= substring.length())
+	{
+		int index = seek_substring_BM(line, substring);
+		cout << index;
+	}
+	else
+	{
+		cout << "Substring can't to be longer then line!" << endl;
+	}
+
+	return 0;
+}
+
+int seek_substring_BM(string line, string substring)
+{
+	int i, j, k;
+	int table[256];
+	int length_line = line.length();
+	int length_substring = substring.length();
+
+	for (int i = 0; i < 256; i++)
+	{
+		table[i] = length_substring;
+	}
+
+	for (i = 0; i < length_substring - 1; i++)
+	{
+		table[substring[i]] = length_substring - i - 1;
+	}
+
+	i = length_substring - 1;
+	do
+	{
+		j = length_substring - 1;
+		k = i;
+		while ((j >= 0) && (substring[j] == line[k]))
+		{
+			k--; 
+			j--;
+		}
+		if (j < 0) return k + 1;
+		i += table[line[i]];
+	} while (i < length_line);
+	return -1;
+}

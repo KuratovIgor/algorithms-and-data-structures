@@ -1,0 +1,105 @@
+#include <iostream>
+#include <string.h>
+#include <windows.h>
+#include <ctime>
+
+using namespace std;
+
+void FillArray(int arr[], const int size);
+void PrintArray(int arr[], const int size);
+void Sort(int arr[], const int size);
+int SearchBinary(int arr[], int left, int right, const int key);
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	const int SIZE = 50;
+	int array[SIZE];
+
+	FillArray(array, SIZE);
+	PrintArray(array, SIZE);
+	Sort(array, SIZE);
+	cout << endl;
+	cout << endl;
+	PrintArray(array, SIZE);
+
+	int value = 0;
+	int index = 0;
+	cout << endl << "¬ведите число от 1 до 50: ";
+	cin >> value;
+
+	index = SearchBinary(array, 0, SIZE, value);
+
+	cout << index;
+	
+	return 0;
+}
+
+void FillArray(int arr[], const int size)
+{
+	srand((unsigned)time(NULL));
+	bool alreadyThere;
+	for (int i = 0; i < size; )
+	{
+		alreadyThere = false;
+		int newValue = rand() % 51;
+		for (int j = 0; j < i; j++)
+		{
+			if (newValue == arr[j])
+			{
+				alreadyThere = true;
+				break;
+			}
+		}
+		if (!alreadyThere)
+		{
+			arr[i] = newValue;
+			i++;
+		}
+	}
+}
+
+void PrintArray(int arr[], const int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << arr[i] << ' ';
+	}
+}
+
+void Sort(int arr[], const int size)
+{
+	for (int i = 0; i < size - 1; i++)
+	{
+		for (int j = i + 1; j < size; j++)
+		{
+			if (arr[i] > arr[j])
+			{
+				int temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+			}
+		}
+	}
+}
+
+int SearchBinary(int arr[], int left, int right, const int key)
+{
+	int middle = 0;
+	while (1)
+	{
+		middle = (left + right) / 2;
+
+		if (key < arr[middle])
+			right = middle - 1;
+		else if (key > arr[middle])
+			left = middle + 1;
+		else return middle;
+
+		if (left > right) return -1;
+	}
+}

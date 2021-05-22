@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string.h>
+#include <windows.h>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	char stroka[50] = { 0,0,0 };
+	cout << "Введите строку заглавными буквами: ";
+	gets_s(stroka);
+	
+	bool checkRegistr = false;
+	for (int i = 0; i < strlen(stroka); i++)
+	{
+		if ((stroka[i] >= 65 && stroka[i] <= 90) || (stroka[i] >= -64 && stroka[i] <= -33) || stroka[i] == ' ')
+		{
+			checkRegistr = true;
+		}
+		else
+		{
+			checkRegistr = false;
+			break;
+		}
+	}
+
+	if (checkRegistr == false)
+	{
+		cout << "В состав строки должны входить только заглавные буквы!";
+		return 0;
+	}
+	else
+	{
+		char stroka2[50] = { 0,0,0 };
+		int n = strlen(stroka);
+		int index = 0;
+		for (int i = 0; i < n; i++)
+		{
+			if (stroka[i] != ' ')
+			{
+				index = i;
+				break;
+			}
+		}
+		int k = 0;
+		for (int i = index; i < n; i++)
+		{
+			stroka2[k] = stroka[i];
+			k++;
+		}
+
+		int count = 0;
+		int n2 = strlen(stroka2);
+		bool word = true;
+		for (int i = 0; i < n2; i++)
+		{
+			if (word == true)
+			{
+				count++;
+				word = false;
+			}
+			if (stroka2[i] == ' ' && stroka2[i + 1] != ' ') word = true;
+		}
+
+		cout << "Количество слов в строке = " << count;
+	}
+
+	return 0;
+}

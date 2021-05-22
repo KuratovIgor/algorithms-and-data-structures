@@ -1,0 +1,125 @@
+#include <iostream>
+#include <string.h>
+#include <windows.h>
+
+using namespace std;
+
+typedef struct info_sport
+{
+	char sername[20] = { 0,0,0 };
+	unsigned int height = 0;
+	unsigned int weight = 0;
+	unsigned int result = 0;
+	char instructor[50] = { 0,0,0 };
+}sportsman;
+
+int SearchBestResult(const sportsman sport[], const int count, const string nameInstrucor);
+string SearchTheHighest(const sportsman sport[], const int count);
+void SearchSameSportsmans(const sportsman sport[], const int count);
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	int count_sportsMan = 0;
+	cout << "Введите количество спортсменов: ";
+	cin >> count_sportsMan;
+	sportsman* sportsMan = new sportsman[count_sportsMan];
+
+	for (int i = 0; i < count_sportsMan; i++)
+	{
+		cout << "СПОРТСМЕН " << i + 1 << ':' << endl;
+		cout << '\t' << "Фамилия: ";
+		cin >> sportsMan[i].sername;
+		cout << '\t' << "Рост: ";
+		cin >> sportsMan[i].height;
+		cout << '\t' << "Вес: ";
+		cin >> sportsMan[i].weight;
+		cout << '\t' << "Результат: ";
+		cin >> sportsMan[i].result;
+		cout << '\t' << "Тренер (Ввод через нижнее подчеркивание): ";
+		cin >> sportsMan[i].instructor;
+//		gets_s(sportsMan->instructor);
+		cout << endl;
+		cout << endl;
+	}
+
+	string scan_name_instr;
+	cout << "Введите ФИО тренера через нижнее подчеркивание: ";
+	cin >> scan_name_instr;
+	int best_result = SearchBestResult(sportsMan, count_sportsMan, scan_name_instr);
+	cout << "Лучший результат спортсмена заданного тренера: " << best_result << endl;
+
+	string theHighest = SearchTheHighest(sportsMan, count_sportsMan);
+	cout << "Самый высокий спорстмен: " << theHighest << endl;
+
+	cout << "Спортсмены с одинаковым ростом и весом: ";
+	SearchSameSportsmans(sportsMan, count_sportsMan);
+
+	delete[] sportsMan;
+
+	return 0;
+}
+
+int SearchBestResult(const sportsman sport[], const int count, const string nameInstrucor)
+{
+	int maxResult = 0;
+	for (int i = 0; i < count; i++)
+	{
+		if (sport[i].instructor == nameInstrucor)
+		{
+			if (sport[i].result > maxResult) maxResult = sport[i].result;
+		}
+	}
+	return maxResult;
+}
+
+string SearchTheHighest(const sportsman sport[], const int count)
+{
+	string theHighestSportsman;
+	int maxHeight = 0;
+	for (int i = 0; i < count; i++)
+	{
+		if (sport[i].height > maxHeight)
+		{
+			maxHeight = sport[i].height;
+			theHighestSportsman = sport[i].sername;
+		}
+	}
+	return theHighestSportsman;
+}
+
+void SearchSameSportsmans(const sportsman sport[], const int count)
+{
+	int* arrIndex = new int[count];
+	for (int i = 0; i < count; i++)
+	{
+		arrIndex[i] = i;
+	}
+	for (int i = 0; i < count; i++)
+	{
+		for (int j = i + 1; j < count; j++)
+		{
+			if (sport[i].height == sport[j].height && sport[i].weight == sport[j].weight)
+			{
+				for (int k = 0; k < count; k++)
+				{
+					if (i == arrIndex[k])
+					{
+						cout << sport[i].sername << ", ";
+						arrIndex[k] = 0;
+					}
+					if (j == arrIndex[k])
+					{
+						cout << sport[j].sername << ", ";
+						arrIndex[k] = 0;
+					}
+				}
+			}
+		}
+	}
+	delete[] arrIndex;
+}

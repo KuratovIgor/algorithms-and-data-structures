@@ -1,0 +1,80 @@
+#include <iostream>
+#include <string.h>
+#include <ctype.h>
+
+using namespace std;
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	char stroka[50];
+	char stroka2[50] = { 0,0,0 };
+	cout << "Enter line on English: ";
+	gets_s(stroka);
+	
+	int n = strlen(stroka);
+	int index = 0;
+	int lastIndex = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (stroka[i] != ' ')
+		{
+			index = i;
+			break;
+		}
+	}
+	int k = 0;
+	for (int i = index; i < n; i++)
+	{
+		stroka2[k] = stroka[i];
+		k++;
+	}
+
+	k = 0;
+	int length_max = 0;
+	index = 0;
+	while (stroka2[k] != ' ')
+	{
+		length_max++;
+		k++;
+		lastIndex = k;
+	}
+	int n2 = strlen(stroka2);
+	for (int i = k; i < n2; i++)
+	{
+		if (stroka2[i] == ' ' && stroka2[i + 1] != ' ') 
+		{
+			int l = i + 1;
+			int length = 0;
+			while (stroka2[l] != ' ' && l != n2)
+			{
+				length++;
+				l++;
+			}
+			if (length > length_max)
+			{
+				length_max = length;
+				index = i + 1;
+				lastIndex = l;
+			}
+			i = l - 1;
+		}
+	}
+
+	char result[50] = { 0,0,0 };
+	k = 0;
+	for (int i = index; i < lastIndex; i++)
+	{
+		result[k] = stroka2[i];
+		k++;
+	}
+	cout << "The longest word: ";
+	for (int i = 0; i < strlen(result); i++)
+	{
+		cout << result[i];
+	}
+
+	return 0;
+}
