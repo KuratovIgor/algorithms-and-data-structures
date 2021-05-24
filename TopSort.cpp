@@ -215,7 +215,7 @@ void Print(Node* node) {
 		cout << current->key << ' ';
 		current = current->nextNode;
 	}
-	//cout << current->key << ' ';
+	cout << current->key << ' ';
 
 	cout << endl;
 }
