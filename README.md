@@ -1,7 +1,10 @@
-# Algorithms-And-Programing
-Здесь находятся реализации различных алгоритмов:
-- Алгоритмы на графах
-- Перестановки
-- Сортировки
-- Реализации некоторых структур данных (списки, стек)
-- Реализации прочих простых задач (задачи на строки, системы счисления и т.д.)
+# Algorithms and data structures on C++
+---
+### Here are the implementations of various algorithms:
+- Algorithms on graphs
+- Permutations
+- Sorting
+- Implementations of some data structures (lists, stack)
+- Implementation of other simple tasks (string tasks, number systems, etc.)
+### To download the repository, you need to write the command in git bash (git cmd):
+  - ***git clone  https://github.com/KuratovIgor/Algorithms-And-Programing.git***
